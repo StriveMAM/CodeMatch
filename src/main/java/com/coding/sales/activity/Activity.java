@@ -1,5 +1,5 @@
 package com.coding.sales.activity;
 
-public abstract class Activity{
+public class Activity{
 
 }
