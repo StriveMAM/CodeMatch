@@ -49,13 +49,17 @@ public class Order {
         ArrayList<String> cards = new ArrayList<String>();
         for (Product pd : mProducts) {
             OrderItemRepresentation item = new OrderItemRepresentation(pd.productNo, pd.productName, pd.mPrice,
-                    new BigDecimal(pd.mCount), pd.mTotalPrice);
+                    new BigDecimal(pd.mCount), pd.mTTPrice);
             list.add(item);
             totalPrice = totalPrice.add(pd.mTotalPrice);
             ttPrice = ttPrice.add(pd.mTTPrice);
 
             DiscountItemRepresentation dr = new DiscountItemRepresentation(pd.productNo, pd.productName,
                     pd.mTTPrice.subtract(pd.mTotalPrice));
+
+            if (pd.mTTPrice.doubleValue() != pd.mTotalPrice.doubleValue())
+                discounts.add(dr);
+
             cards.addAll(pd.mDiscountCardUsed);
         }
         BigDecimal totalDiscountPrice = ttPrice.subtract(totalPrice);

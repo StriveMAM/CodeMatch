@@ -3,8 +3,6 @@ package com.coding.sales.product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import com.coding.sales.activity.Activity;
-
 public class Product {
     public ArrayList<String> mDiscountCard = new ArrayList<String>();
     public ArrayList<String> mActivity = new ArrayList<String>();;
@@ -21,36 +19,33 @@ public class Product {
     public BigDecimal mTTPrice;// 总价格
 
     public BigDecimal doBuy(ArrayList<String> discounts) {
-
-        BigDecimal discount = getTotalPriceByDiscount(discounts, false);
+        ArrayList<String> temp = new ArrayList<String>();
+        temp.addAll(discounts);
+        BigDecimal discount = getTotalPriceByDiscount(temp, false);
         BigDecimal manjian = getTotalPriceByActivity(false);
-        if (discount.compareTo(manjian) == 1) {
-            return getTotalPriceByDiscount(discounts, true);
+        BigDecimal tt = null;
+        if (discount.doubleValue() - manjian.doubleValue() > 0) {
+            tt = getTotalPriceByActivity(true);
         } else {
-            return getTotalPriceByActivity(true);
+            tt = getTotalPriceByDiscount(discounts, true);
         }
+        return tt;
     }
 
     public BigDecimal getTotalPriceByDiscount(ArrayList<String> discounts, boolean real) {
         mTTPrice = mPrice.multiply(new BigDecimal(mCount));
-        BigDecimal price = new BigDecimal("0");
-        int count = mCount;
+        BigDecimal price = mTTPrice;
         for (String t : mDiscountCard) {
             BigDecimal p = mPrice;
-            if (count == 0) {
-                break;
-            }
             if (discounts.contains(t)) {
                 discounts.remove(t);
-                count = count - 1;
-                p = getPriceByDiscount(t);
-                price = price.add(p);
+                price = getPriceByDiscount(mTTPrice, t);
                 if (real) {
                     mDiscountCardUsed.add(t);
                 }
             }
         }
-        price = price.add(mPrice.multiply(new BigDecimal(count)));
+
         if (real) {
             mTotalPrice = price;
         }
@@ -84,15 +79,16 @@ public class Product {
         }
         BigDecimal priceShan = null;
         String typeShan = null;
-        if (mCount >= 4) {
+        if (mCount >= 4 && mActivity.contains("满3送1")) {
             priceShan = mPrice.multiply(new BigDecimal(mCount - 1));
             typeShan = "满3送1";
-        } else if (mCount == 3) {
+        } else if (mCount == 3 && mActivity.contains("第3件半价")) {
             priceShan = mPrice.multiply(new BigDecimal(mCount).subtract(mPrice.multiply(new BigDecimal("0.5"))));
             typeShan = "第3件半价";
         } else {
             priceShan = price;
         }
+
         if (priceShan.compareTo(priceJian) > -1) {
             price = priceJian;
             if (real) {
@@ -110,13 +106,13 @@ public class Product {
         return price;
     }
 
-    private BigDecimal getPriceByDiscount(String type) {
+    private BigDecimal getPriceByDiscount(BigDecimal p, String type) {
         if ("95折券".equals(type)) {
-            return mPrice.multiply(new BigDecimal(0.95f));
+            return p.multiply(new BigDecimal("0.95"));
         } else if ("9折券".equals(type)) {
-            return mPrice.multiply(new BigDecimal(0.9f));
+            return p.multiply(new BigDecimal("0.9"));
         } else {
-            return mPrice;
+            return p;
         }
     }
 }

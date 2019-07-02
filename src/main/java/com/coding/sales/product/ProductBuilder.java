@@ -14,13 +14,16 @@ public class ProductBuilder {
         for (OrderItemCommand item : command.getItems()) {
             list.add(buildProduct(item));
         }
-        list.sort(new Comparator<Product>(){
+        list.sort(new Comparator<Product>() {
 
             @Override
             public int compare(Product o1, Product o2) {
-                return 0;
+                if (o1.amount * o1.mPrice.doubleValue() > o1.amount * o1.mPrice.doubleValue()) {
+                    return -1;
+                }
+                return 1;
             }
-            
+
         });
         return list;
     }
