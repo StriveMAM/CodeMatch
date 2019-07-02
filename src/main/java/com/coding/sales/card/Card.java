@@ -6,4 +6,12 @@ public class Card{
     private String mCardNo;
     private int mIntegral;
 
+    public Card(){
+
+    }
+
+    public void add(int integral){
+
+    }
+
 }

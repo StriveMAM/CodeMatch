@@ -1,7 +1,17 @@
 package com.coding.sales;
 
+import java.util.ArrayList;
+
+import com.coding.sales.activity.Activity;
+import com.coding.sales.activity.ActivityBuilder;
+import com.coding.sales.card.Card;
+import com.coding.sales.card.CardBuilder;
+import com.coding.sales.discount.DiscountCard;
+import com.coding.sales.discount.DiscountCardBuilder;
 import com.coding.sales.input.OrderCommand;
 import com.coding.sales.output.OrderRepresentation;
+import com.coding.sales.product.Product;
+import com.coding.sales.product.ProductBuilder;
 
 /**
  * 销售系统的主入口
@@ -34,7 +44,11 @@ public class OrderApp {
         OrderRepresentation result = null;
 
         //TODO: 请完成需求指定的功能
-
-        return result;
+        Card card = CardBuilder.getCard(command);
+        ArrayList<DiscountCard> discountCards = DiscountCardBuilder.gDiscountCards(command);
+        ArrayList<Product> products = ProductBuilder.getProduct(command);
+        Order order = new Order(command);
+        order.buy(card, products,discountCards);
+        return null;
     }
 }
