@@ -79,13 +79,20 @@ public class Product {
         }
         BigDecimal priceShan = null;
         String typeShan = null;
-        if (mCount >= 4 && mActivity.contains("满3送1")) {
-            priceShan = mPrice.multiply(new BigDecimal(mCount - 1));
-            typeShan = "满3送1";
+        if (mCount >= 4) {
+            if (mActivity.contains("满3送1")) {
+                priceShan = mPrice.multiply(new BigDecimal(mCount - 1));
+                typeShan = "满3送1";
+            } else if (mActivity.contains("第3件半价")) {
+                priceShan = mPrice.multiply(new BigDecimal(mCount)).subtract(mPrice.multiply(new BigDecimal("0.5")));
+                typeShan = "满3送1";
+            }
+
         } else if (mCount == 3 && mActivity.contains("第3件半价")) {
-            priceShan = mPrice.multiply(new BigDecimal(mCount).subtract(mPrice.multiply(new BigDecimal("0.5"))));
+            priceShan = mPrice.multiply(new BigDecimal(mCount)).subtract(mPrice.multiply(new BigDecimal("0.5")));
             typeShan = "第3件半价";
-        } else {
+        }
+        if (priceShan == null) {
             priceShan = price;
         }
 
