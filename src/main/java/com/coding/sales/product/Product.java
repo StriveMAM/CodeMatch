@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Product {
     public ArrayList<String> mDiscountCard = new ArrayList<String>();
-    public ArrayList<String> mActivity = new ArrayList<String>();;
+    public ArrayList<String> mActivity = new ArrayList<String>();
     public BigDecimal mPrice;
     public int mCount;
     public String productNo;
