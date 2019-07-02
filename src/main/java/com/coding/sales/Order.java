@@ -2,13 +2,11 @@ package com.coding.sales;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.coding.sales.card.Card;
-import com.coding.sales.discount.DiscountCard;
 import com.coding.sales.input.*;
 import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
@@ -77,27 +75,8 @@ public class Order {
     private void doBuy() {
         ArrayList<String> list = new ArrayList<String>();
         list.addAll(mDiscountCards);
-        BigDecimal total = new BigDecimal("0");
         for (Product pt : mProducts) {
-            total = total.add(pt.doBuy(list));
+            pt.doBuy(list);
         }
-    }
-
-    private BigDecimal doManjian(boolean real) {
-        BigDecimal total = new BigDecimal("0");
-        for (Product pt : mProducts) {
-            total = total.add(pt.getTotalPriceByActivity(real));
-        }
-        return total;
-    }
-
-    private BigDecimal doDazhe(boolean real) {
-        ArrayList<String> list = new ArrayList<String>();
-        list.addAll(mDiscountCards);
-        BigDecimal total = new BigDecimal("0");
-        for (Product pt : mProducts) {
-            total = total.add(pt.getTotalPriceByDiscount(list, real));
-        }
-        return total;
     }
 }
