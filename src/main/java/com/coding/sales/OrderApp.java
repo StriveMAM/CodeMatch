@@ -14,8 +14,7 @@ import com.coding.sales.product.Product;
 import com.coding.sales.product.ProductBuilder;
 
 /**
- * 销售系统的主入口
- * 用于打印销售凭证
+ * 销售系统的主入口 用于打印销售凭证
  */
 public class OrderApp {
 
@@ -36,19 +35,18 @@ public class OrderApp {
     public String checkout(String orderCommand) {
         OrderCommand command = OrderCommand.from(orderCommand);
         OrderRepresentation result = checkout(command);
-        
+
         return result.toString();
     }
 
     OrderRepresentation checkout(OrderCommand command) {
         OrderRepresentation result = null;
 
-        //TODO: 请完成需求指定的功能
+        // TODO: 请完成需求指定的功能
         Card card = CardBuilder.getCard(command);
-        ArrayList<DiscountCard> discountCards = DiscountCardBuilder.gDiscountCards(command);
+        ArrayList<String> discountCards = DiscountCardBuilder.getDiscountCards(command);
         ArrayList<Product> products = ProductBuilder.getProduct(command);
-        Order order = new Order(command);
-        order.buy(card, products,discountCards);
-        return null;
+        Order order = new Order(command, card, products, discountCards);
+        return order.buy();
     }
 }
