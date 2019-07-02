@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.coding.sales.activity.Activity;
 import com.coding.sales.card.Card;
 import com.coding.sales.discount.DiscountCard;
 import com.coding.sales.input.*;
@@ -49,15 +48,15 @@ public class Order {
         ArrayList<String> cards = new ArrayList<String>();
         for (Product pd : mProducts) {
             OrderItemRepresentation item = new OrderItemRepresentation(pd.productNo, pd.productName, pd.mPrice,
-                    new BigDecimal(pd.mCount), pd.mTTPrice);
+                    new BigDecimal(pd.mCount), pd.mTotalOriginalPrice);
             list.add(item);
             totalPrice = totalPrice.add(pd.mTotalPrice);
-            ttPrice = ttPrice.add(pd.mTTPrice);
+            ttPrice = ttPrice.add(pd.mTotalOriginalPrice);
 
             DiscountItemRepresentation dr = new DiscountItemRepresentation(pd.productNo, pd.productName,
-                    pd.mTTPrice.subtract(pd.mTotalPrice));
+                    pd.mTotalOriginalPrice.subtract(pd.mTotalPrice));
 
-            if (pd.mTTPrice.doubleValue() != pd.mTotalPrice.doubleValue())
+            if (pd.mTotalOriginalPrice.doubleValue() != pd.mTotalPrice.doubleValue())
                 discounts.add(dr);
 
             cards.addAll(pd.mDiscountCardUsed);

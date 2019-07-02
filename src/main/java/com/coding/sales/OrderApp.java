@@ -2,8 +2,6 @@ package com.coding.sales;
 
 import java.util.ArrayList;
 
-import com.coding.sales.activity.Activity;
-import com.coding.sales.activity.ActivityBuilder;
 import com.coding.sales.card.Card;
 import com.coding.sales.card.CardBuilder;
 import com.coding.sales.discount.DiscountCard;
