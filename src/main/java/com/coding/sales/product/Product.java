@@ -1,5 +1,10 @@
 package com.coding.sales.product;
 
-public abstract class Product{
+import java.util.ArrayList;
+
+import com.coding.sales.activity.Activity;
+
+public class Product {
+    protected  ArrayList<Activity> mActivities = new ArrayList<Activity>();
 
 }
