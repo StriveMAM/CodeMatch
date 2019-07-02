@@ -7,12 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.coding.sales.activity.Activity;
 import com.coding.sales.card.Card;
 import com.coding.sales.discount.DiscountCard;
 import com.coding.sales.input.*;
 import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
 import com.coding.sales.output.OrderRepresentation;
+import com.coding.sales.output.PaymentRepresentation;
 import com.coding.sales.product.Product;
 
 public class Order {
@@ -48,27 +50,29 @@ public class Order {
         ArrayList<String> cards = new ArrayList<String>();
         for (Product pd : mProducts) {
             OrderItemRepresentation item = new OrderItemRepresentation(pd.productNo, pd.productName, pd.mPrice,
-                    new BigDecimal(pd.mCount), pd.mTotalOriginalPrice);
+                    new BigDecimal(pd.mCount), pd.mTTPrice);
             list.add(item);
             totalPrice = totalPrice.add(pd.mTotalPrice);
-            ttPrice = ttPrice.add(pd.mTotalOriginalPrice);
+            ttPrice = ttPrice.add(pd.mTTPrice);
 
             DiscountItemRepresentation dr = new DiscountItemRepresentation(pd.productNo, pd.productName,
-                    pd.mTotalOriginalPrice.subtract(pd.mTotalPrice));
-
-            if (pd.mTotalOriginalPrice.doubleValue() != pd.mTotalPrice.doubleValue())
-                discounts.add(dr);
-
+                    pd.mTTPrice.subtract(pd.mTotalPrice));
             cards.addAll(pd.mDiscountCardUsed);
+            if (pd.mTTPrice.doubleValue() != pd.mTotalPrice.doubleValue())
+                discounts.add(dr);
         }
         BigDecimal totalDiscountPrice = ttPrice.subtract(totalPrice);
         mCard.add(totalPrice.intValue());
         String newMemberType = mCard.getType();
         int memberPointsIncreased = mCard.getAddedPoints();
         int memberPoints = mCard.getPoints();
+        ArrayList<PaymentRepresentation> payments = new ArrayList<PaymentRepresentation>();
+        for (PaymentCommand pc : mCommand.getPayments()) {
+            payments.add(new PaymentRepresentation(pc.getType(), pc.getAmount()));
+        }
         return new OrderRepresentation(orderId, createTime, memberNo, memberName, oldMemberType, newMemberType,
                 memberPointsIncreased, memberPoints, list, ttPrice, discounts, ttPrice.subtract(totalPrice), totalPrice,
-                null, cards);
+                payments, cards);
     }
 
     private void doBuy() {
