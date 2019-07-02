@@ -20,6 +20,17 @@ public class Product {
     public BigDecimal mTotalPrice;// 优惠总价格
     public BigDecimal mTTPrice;// 总价格
 
+    public BigDecimal doBuy(ArrayList<String> discounts) {
+
+        BigDecimal discount = getTotalPriceByDiscount(discounts, false);
+        BigDecimal manjian = getTotalPriceByActivity(false);
+        if (discount.compareTo(manjian) == 1) {
+            return getTotalPriceByDiscount(discounts, true);
+        } else {
+            return getTotalPriceByActivity(true);
+        }
+    }
+
     public BigDecimal getTotalPriceByDiscount(ArrayList<String> discounts, boolean real) {
         mTTPrice = mPrice.multiply(new BigDecimal(mCount));
         BigDecimal price = new BigDecimal("0");
@@ -101,9 +112,9 @@ public class Product {
 
     private BigDecimal getPriceByDiscount(String type) {
         if ("95折券".equals(type)) {
-            return mPrice.multiply(new BigDecimal("0.95"));
-        } else if ("9折卷".equals(type)) {
-            return mPrice.multiply(new BigDecimal("0.9"));
+            return mPrice.multiply(new BigDecimal(0.95f));
+        } else if ("9折券".equals(type)) {
+            return mPrice.multiply(new BigDecimal(0.9f));
         } else {
             return mPrice;
         }

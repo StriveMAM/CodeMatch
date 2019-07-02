@@ -69,14 +69,12 @@ public class Order {
     }
 
     private void doBuy() {
-        BigDecimal discount = doDazhe(false);
-        BigDecimal manjian = doManjian(false);
-        if (discount.compareTo(manjian) == 1) {
-            doDazhe(true);
-        } else {
-            doManjian(true);
+        ArrayList<String> list = new ArrayList<String>();
+        list.addAll(mDiscountCards);
+        BigDecimal total = new BigDecimal("0");
+        for (Product pt : mProducts) {
+            total = total.add(pt.doBuy(list));
         }
-
     }
 
     private BigDecimal doManjian(boolean real) {
