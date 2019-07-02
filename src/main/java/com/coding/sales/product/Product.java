@@ -3,8 +3,6 @@ package com.coding.sales.product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import com.coding.sales.activity.Activity;
-
 public class Product {
     public ArrayList<String> mDiscountCard = new ArrayList<String>();
     public ArrayList<String> mActivity = new ArrayList<String>();;
@@ -18,7 +16,7 @@ public class Product {
     public String mActivityType;
 
     public BigDecimal mTotalPrice;// 优惠总价格
-    public BigDecimal mTTPrice;// 总价格
+    public BigDecimal mTotalOriginPrice;// 总价格
 
     public BigDecimal doBuy(ArrayList<String> discounts) {
         ArrayList<String> temp = new ArrayList<String>();
@@ -35,13 +33,13 @@ public class Product {
     }
 
     public BigDecimal getTotalPriceByDiscount(ArrayList<String> discounts, boolean real) {
-        mTTPrice = mPrice.multiply(new BigDecimal(mCount));
-        BigDecimal price = mTTPrice;
+        mTotalOriginPrice = mPrice.multiply(new BigDecimal(mCount));
+        BigDecimal price = mTotalOriginPrice;
         for (String t : mDiscountCard) {
             BigDecimal p = mPrice;
             if (discounts.contains(t)) {
                 discounts.remove(t);
-                price = getPriceByDiscount(mTTPrice, t);
+                price = getPriceByDiscount(mTotalOriginPrice, t);
                 if (real) {
                     mDiscountCardUsed.add(t);
                 }
